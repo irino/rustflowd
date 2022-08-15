@@ -1,0 +1,150 @@
+module rustflowd {
+  namespace "https://github.com/irino/rustflowd";
+  prefix "rustflowd";
+  
+  import ietf-ipfix-psamp { prefix ipfix; }
+
+  contact
+    "rustflowd https://github.com/irino/rustflowd";
+  description
+    "This module contains definitions for rustflowd data structures.";
+  revision "2021-2-27" {
+    description
+      "Updated model by using augment and deviation statement based on
+       ietf-ipfix-psamp modules.";
+  }
+  
+  /*****************************************************************
+   * Type definitions
+   *****************************************************************/  
+  typedef cacheType {
+    type enumeration {
+      enum naturalCache { description "This value is used for naturalCache"; }
+      enum timeoutCache { description "This value is used for timeoutCache"; }
+      enum permanentCache { description "This value is used for permanentCache"; }
+    }
+    description "type of cache.";
+  }
+
+  /*****************************************************************
+   * Groupings
+   *****************************************************************/  
+  grouping rustflowdTimeoutParameters {
+    leaf tcpIdleTimeout {
+      type uint32;
+      units seconds;
+      description "rustflowd original parameter derived from softflowd
+                   for tcp idle timeout.";
+    }
+    leaf tcpRstIdleTimeout {
+      type uint32;
+      units seconds;
+      description "rustflowd original parameter derived from softflowd
+                   for tcp reset timeout.";      
+    }
+    leaf tcpFinIdleTimeout {
+      type uint32;
+      units seconds;
+      description "rustflowd original parameter derived from softflowd
+                   for tcp fin timeout.";
+    }
+    leaf udpIdleTimeout {
+      type uint32;
+      units seconds;
+      description "rustflowd original parameter derived from softflowd
+                   for udp idle timeout.";
+    }
+    leaf icmpIdleTimeout {
+      type uint32;
+      units seconds;
+      description "rustflowd original parameter derived from softflowd
+                   for icmp idle timeout.";
+    }
+    leaf checkExpiryInterval {
+      type uint32;
+      units seconds;
+      description "rustflowd original parameter derived from softflowd
+                   for itnerval time for periodic expire.";
+    }
+  }
+
+  augment "/ipfix:ipfix/ipfix:observationPoint" {
+    leaf offline {
+      type boolean;
+      default false;
+      description "Use file instead of online interface.";
+    }
+    leaf promiscuous {
+      type boolean;
+      default false;
+      description "Use promiscuous mode for packet capture.";
+    }
+    leaf maxObservingPackets {
+      type uint64;
+      description "maximum (limitation) number of observing
+                   (captureing) packets";
+    }
+    /*
+    leaf packetCaptureFileName {
+      type string;
+      description "name of packet capture (pcap) file";
+    }
+    leaf packetCaptureLength {
+      type uint32;
+      default 1518;
+      description "packet capture length (a.k.a snaplen)";
+    }
+    */
+  }
+
+  deviation "/ipfix:ipfix/ipfix:cache/ipfix:CacheType" {
+    deviate not-supported;
+    description "CacheType is not supported because CacheType uses
+                 choice statement and choice statement is not able to
+                 be compiled collectly by combination of ygot proto
+                 generator and tonic/prost.";
+  }
+
+  augment "/ipfix:ipfix/ipfix:cache" {
+    leaf cacheType {
+      type cacheType;
+      default naturalCache;
+      description "type of cache.";
+    }
+    uses ipfix:flowCacheParameters;
+    uses ipfix:cacheLayoutParameters;
+    uses rustflowdTimeoutParameters;
+    description "flowCacheParameters and cacheLayoutParameters are
+                 used in naturalCache, permernentCache, and
+                 timeoutCache. This module augment flowCacheParameters
+                 and cacheLayoutParameters instead of deviated
+                 CacheType";
+  }
+  deviation "/ipfix:ipfix/ipfix:exportingProcess/ipfix:destination/ipfix:DestinationParameters"{
+    deviate not-supported;
+    description "DestinationParameters is not supported because
+                 DestinationParameters uses choice statement and
+                 choice statement is not able to be compiled collectly
+                 by combination of ygot proto generator and tonic/prost.";
+    
+  }
+  augment "/ipfix:ipfix/ipfix:exportingProcess/ipfix:destination" {
+    leaf exportTransportProtocolName {
+      type string;
+      description "exportTransportProtocolName which is used
+                   instead of DestinationParameters.";
+    }
+    uses ipfix:udpExporterParameters;
+  }
+  deviation "/ipfix:ipfix/ipfix:selectionProcess/ipfix:selector/ipfix:Method" {
+    deviate not-supported;
+    description "Method is not supported because Method uses choice
+                statement and choice statement is not able to be
+                compiled collectly by combination of ygot proto
+                generator and tonic/prost.";
+    
+  }
+  augment "/ipfix:ipfix/ipfix:selectionProcess/ipfix:selector" {
+    uses ipfix:sampCountBasedParameters;
+  }
+}

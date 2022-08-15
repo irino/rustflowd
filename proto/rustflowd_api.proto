@@ -1,0 +1,13 @@
+syntax = "proto3";
+package rustflowd;
+
+import "google/protobuf/empty.proto";
+import "rustflowd_generated.proto";
+
+service RustflowdApi {
+  rpc CreateCache (Ipfix.CacheKey) returns (google.protobuf.Empty);
+  rpc CreateCollectingProcess (Ipfix.CollectingProcessKey) returns (google.protobuf.Empty);
+  rpc CreateExportingProcess (Ipfix.ExportingProcessKey) returns (google.protobuf.Empty);
+  rpc CreateObservationPoint (Ipfix.ObservationPointKey) returns (google.protobuf.Empty);
+  rpc CreateSelectionProcess (Ipfix.SelectionProcessKey) returns (google.protobuf.Empty);
+}
