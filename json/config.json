@@ -1,0 +1,186 @@
+{
+  "cache": [
+    {
+      "name": "Flow cache_a",
+      "cache": {
+        "active_flows": null,
+        "active_timeout": {
+          "value": 5000
+        },
+        "cache_discontinuity_time": null,
+        "cache_layout": {
+          "cache_field": [
+            {
+              "name": "Field 1",
+              "cache_field": null
+            },
+            {
+              "name": "Field 2",
+              "cache_field": null
+            },
+            {
+              "name": "Field 3",
+              "cache_field": null
+            },
+            {
+              "name": "Field 4",
+              "cache_field": null
+            },
+            {
+              "name": "Field 5",
+              "cache_field": null
+            },
+            {
+              "name": "Field 6",
+              "cache_field": null
+            },
+            {
+              "name": "Field 7",
+              "cache_field": null
+            },
+            {
+              "name": "Field 8",
+              "cache_field": null
+            },
+            {
+              "name": "Field 9",
+              "cache_field": null
+            }
+          ]
+        },
+        "cache_type": 0,
+        "check_expiry_interval": null,
+        "data_records": null,
+        "export_interval": null,
+        "exporting_process": [
+          {
+            "value": "UDP"
+          }
+        ],
+        "icmp_idle_timeout": null,
+        "idle_timeout": {
+          "value": 10000
+        },
+        "max_flows": {
+          "value": 4096
+        },
+        "metering_process_id": null,
+        "tcp_fin_idle_timeout": null,
+        "tcp_idle_timeout": null,
+        "tcp_rst_idle_timeout": null,
+        "udp_idle_timeout": null,
+        "unused_cache_entries": null
+      }
+    }
+  ],
+  "collecting_process": [
+    {
+      "name": "collector",
+      "collecting_process": {
+        "exporting_process": [],
+        "file_reader": [],
+        "sctp_collector": [],
+        "tcp_collector": [],
+        "udp_collector": [
+          {
+            "name": "udp-collector",
+            "udp_collector": null
+          }
+        ]
+      }
+    }
+  ],
+  "exporting_process": [
+    {
+      "name": "UDP",
+      "exporting_process": {
+        "destination": [
+          {
+            "name": "UDP",
+            "destination": null
+          }
+        ],
+        "export_mode": 0,
+        "exporting_process_id": null,
+        "options": []
+      }
+    }
+  ],
+  "observation_point": [
+    {
+      "name": "pcap",
+      "observation_point": {
+        "direction": 0,
+        "ent_physical_index": [
+          {
+            "value": 1
+          }
+        ],
+        "ent_physical_name": [
+          {
+            "value": "enp0s8"
+          }
+        ],
+        "if_index": [
+          {
+            "value": 1
+          }
+        ],
+        "if_name": [
+          {
+            "value": "enp0s8"
+          }
+        ],
+        "max_observing_packets": null,
+        "observation_domain_id": {
+          "value": 1
+        },
+        "observation_point_id": null,
+        "offline": null,
+        "packet_capture_length": null,
+        "promiscuous": null,
+        "selection_process": [
+          {
+            "value": "All"
+          }
+        ]
+      }
+    }
+  ],
+  "selection_process": [
+    {
+      "name": "All",
+      "selection_process": {
+        "cache": {
+          "value": "Flow cache"
+        },
+        "selection_sequence": [
+          {
+            "observation_domain_id": {
+              "value": 1
+            },
+            "selection_sequence_id": {
+              "value": 1
+            }
+          }
+        ],
+        "selector": [
+          {
+            "name": "Select all",
+            "selector": {
+              "packet_interval": {
+                "value": 1
+              },
+              "packet_space": {
+                "value": 1
+              },
+              "packets_dropped": null,
+              "packets_observed": null,
+              "selector_discontinuity_time": null
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
